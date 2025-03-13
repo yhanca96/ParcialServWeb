@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace ParcialServWeb.Controllers
 {
-
+    
     [RoutePrefix("api/computadores")]
     public class GestionComputadoresController : ApiController
     {
@@ -29,16 +29,7 @@ namespace ParcialServWeb.Controllers
             clsGestionComputador Computador = new clsGestionComputador();
             return Computador.Consultar(idComputador);
         }
-
-        [HttpGet]
-        [Route("consultarProcesador")]
-        public Computador ConsultarProcesador(int numeroProcesadores)
-        {
-            clsGestionComputador comp = new clsGestionComputador();
-            return comp.ConsultarProcesador(numeroProcesadores);
-        }
-
-
+   
         [HttpPost]
         [Route("insertar")]
         public string Insertar([FromBody] Computador computador)
@@ -58,15 +49,33 @@ namespace ParcialServWeb.Controllers
             return Computador.Actualizar();
         }
 
-
-
         [HttpDelete]
         [Route("eliminarID")]
-
         public string EliminarID(int idComputador)
         {
             clsGestionComputador Computador = new clsGestionComputador();
             return Computador.EliminarIdComputador(idComputador);
+        }
+
+
+
+
+        //CONTROLADORES ADICIONALES PARA EL PARCIAL
+
+        [HttpGet]
+        [Route("consultarTipo")]
+        public List<Computador> ConsultarPorTipo(string tipoComputador)
+        {
+            clsGestionComputador comp = new clsGestionComputador();
+            return comp.ConsultarPorTipo(tipoComputador);
+        }
+
+        [HttpGet]
+        [Route("consultarProcesador")]
+        public List<Computador> ConsultarPorProcesador(int numeroProcesadores)
+        {
+            clsGestionComputador Computador = new clsGestionComputador();
+            return Computador.ConsultarPorProcesador(numeroProcesadores);
         }
 
     }

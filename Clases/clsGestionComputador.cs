@@ -27,10 +27,6 @@ namespace ParcialServWeb.Clases
 
             }
         }
-
-
-
-
         public string Actualizar()
         {
             try
@@ -50,40 +46,16 @@ namespace ParcialServWeb.Clases
             }
 
         }
-        public Computador ConsultarProcesador(int numeroProcesadores)
-        {
-            if (numeroProcesadores <= 0)
-            {
-                throw new ArgumentException("El número de procesadores debe ser mayor a 0.");
-            }
-
-            Computador computador = dbVentas.Computadores.FirstOrDefault(e => e.NumeroProcesadores == numeroProcesadores);
-
-            if (computador == null)
-            {
-                throw new KeyNotFoundException("No se encontró un computador con ese número de procesadores.");
-            }
-
-            return computador;
-        }
-
-
-        //public Computador ConsultarProcesador (int numeroProcesadores)
-        //{
-        //    return dbVentas.Computadores.FirstOrDefault(e => e.NumeroProcesadores == numeroProcesadores);
-        //}   
 
         public List<Computador> ConsultarTodos()
         {
-            return dbVentas.Computadores.ToList(); //devuelve una lista de Computadors
+            return dbVentas.Computadores.ToList(); 
         }
 
         public Computador Consultar(int idComputador)
         {
             return dbVentas.Computadores.FirstOrDefault(e => e.IdComputador == idComputador);
         }
-
- 
 
         public string EliminarIdComputador(int idComputador)
         {
@@ -104,6 +76,40 @@ namespace ParcialServWeb.Clases
             }
 
 
+        }
+
+
+        //METODOS ADICIONALES PARA EL PARCIAL
+
+        public List<Computador> ConsultarPorProcesador(int numeroProcesadores)
+        {
+            return dbVentas.Computadores
+                .Where(c => c.NumeroProcesadores == numeroProcesadores)
+                .ToList();
+        }
+
+        public List<Computador> ConsultarPorTipo(string nombreTipo)
+        {
+            try
+            {
+                var computadores = (from c in dbVentas.Computadores
+                                    join t in dbVentas.TipoComputadores on c.IdTipoComputador equals t.IdTipoComputador
+                                    where t.Descripcion == nombreTipo
+                                    select c).ToList();
+
+                if (computadores == null)
+                {
+                    throw new KeyNotFoundException("No se encontraron computadores con el tipo especificado.");
+                }
+
+                return computadores;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al consultar computadores por tipo: " + ex.Message);
             }
         }
+    }
 }
+
+    
